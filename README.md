@@ -1,1 +1,1 @@
-# SampleMetadataValidatorEVE175
+# Sample Metadata Validator for EVE175
