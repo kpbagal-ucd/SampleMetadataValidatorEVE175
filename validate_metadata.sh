@@ -99,7 +99,7 @@ done < <(tail -n +2 "$INPUT")
 # -2 bc started 1 line ahead and while loop ends 1 number ahead of last line
 totalLinesRead=$((lineNum - 2))
 goodLines=$((totalLinesRead - errorLines))
-echo -e "Summary: \n"
+echo -e "\nSummary:"
 echo "Total rows: $totalLinesRead"
 echo "Rows with errors: $errorLines"
 echo "Rows passing: $goodLines"
