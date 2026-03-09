@@ -19,3 +19,19 @@ elif [[ "$INPUT" != *.tsv ]]; then
     echo "Usage: ./validate_metadata.sh data.tsv"
     exit 1
 fi
+
+# Check header list, ensure that all 4 headers are there
+expected_header=("sample_id" "species" "tissue" "date")
+missing_header=()
+
+# Iterate through columns to check that all are present
+for column in "${expected_header[@]}"; do
+    if !(head -n 1 "$INPUT" | grep -qw "$column"); then
+        missing_header+=("$column")
+    fi
+done
+# Print out missing columns if needed
+if [ ${#missing_header[@]} -ne 0 ]; then
+    echo "Error: Missing column(s): ${missing_header[*]}"
+    exit 1
+fi
