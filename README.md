@@ -27,7 +27,8 @@ Script exits with status 1 if any error found, and with status 0 if no errors fo
 
 ## Example
 Example Input:
-```sample_id	species	tissue	date
+```
+sample_id	species	tissue	date
 S001	Human	Blood	2026-03-08
 	Mouse	Brain	2026-03-08
 S001	Dog	Liver	26-03-08
@@ -36,12 +37,13 @@ S004	Cat	Lungs	2026/03/08
 
 Example Output:
 
-```Line 3: Missing value in column(s): 'date'
+```
+Line 3: Missing value in column(s): 'sample_id'
 Line 4: Duplicate sample_id 'S001'
 Line 4: Invalid date format '26-03-08'
 Line 5: Invalid date format '2026/03/08'
 
-Summary: 
+Summary:
 Total rows: 4
 Rows with errors: 3
 Rows passing: 1

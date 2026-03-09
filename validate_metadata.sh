@@ -46,7 +46,7 @@ errorLines=0
 
 # Read file line by line (starting after header)
 # Different columns values are auto-assigned to the variables defined in the loop every line
-while read -r sample_id species tissue date; do
+while IFS=$'|' read -r sample_id species tissue date; do
     lineFailed="false"
 
     # Check if any of the columns are missing a value in a given lines
@@ -93,7 +93,7 @@ while read -r sample_id species tissue date; do
 
     #Add to line number to keep proper track
     ((lineNum+=1))
-done < <(tail -n +2 "$INPUT")
+done < <(sed 's/\t/|/g' "$INPUT" | tail -n +2)
 
 # Summary Stats
 # -2 bc started 1 line ahead and while loop ends 1 number ahead of last line
