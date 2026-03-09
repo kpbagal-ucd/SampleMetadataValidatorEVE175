@@ -12,11 +12,11 @@ Example command to run:
 
 ## Script Functions
 This script checks for a few common errors that might occur when making/editing a .tsv file
-1) Checks heading line to ensure 4 columns are present: sample_id, species, tissue, and date
-2) Checks for missing values from any of the columns
-3) Checks for duplicate sampleIDs
-4) Checks that dates match the pattern YYYY-MM-DD (but not that it is a valid date)
-5) Checks that proper file + file format are given as inputs to the script
+- Checks heading line to ensure 4 columns are present: sample_id, species, tissue, and date
+- Checks for missing values from any of the columns
+- Checks for duplicate sampleIDs
+- Checks that dates match the pattern YYYY-MM-DD (but not that it is a valid date)
+- Checks that proper file + file format are given as inputs to the script
 
 For each error found, the script will print an error message with the line number and type of error found
 At the end, will summarize total stats:
@@ -27,14 +27,16 @@ Script exits with status 1 if any error found, and with status 0 if no errors fo
 
 ## Example
 Example Input:
-sample_id	species	tissue	date
+```sample_id	species	tissue	date
 S001	Human	Blood	2026-03-08
 	Mouse	Brain	2026-03-08
 S001	Dog	Liver	26-03-08
 S004	Cat	Lungs	2026/03/08
+```
 
 Example Output:
-Line 3: Missing value in column(s): 'date'
+
+```Line 3: Missing value in column(s): 'date'
 Line 4: Duplicate sample_id 'S001'
 Line 4: Invalid date format '26-03-08'
 Line 5: Invalid date format '2026/03/08'
@@ -43,3 +45,4 @@ Summary:
 Total rows: 4
 Rows with errors: 3
 Rows passing: 1
+```
