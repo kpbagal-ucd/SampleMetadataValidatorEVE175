@@ -23,6 +23,7 @@ fi
 # Check header list, ensure that all 4 headers are there
 expected_header=("sample_id" "species" "tissue" "date")
 missing_header=()
+headerFailed="false"
 
 # Iterate through columns to check that all are present
 for column in "${expected_header[@]}"; do
@@ -32,8 +33,8 @@ for column in "${expected_header[@]}"; do
 done
 # Print out missing columns if needed
 if [ ${#missing_header[@]} -ne 0 ]; then
-    echo "Error: Missing column(s): ${missing_header[*]}"
-    exit 1
+    echo "Line 2: Missing column(s): ${missing_header[*]}"
+    headerFailed="true"
 fi
 
 # Checking individal rows for proper formatting
@@ -105,7 +106,7 @@ echo "Rows with errors: $errorLines"
 echo "Rows passing: $goodLines"
 
 # Check if no errors and exit accordingly
-if (( errorLines == 0 )); then
+if (( errorLines == 0 )) && [ "$headerFailed" == "false" ]; then
     exit 0
 else
     exit 1
