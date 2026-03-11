@@ -10,14 +10,17 @@ BadOutput="bad_output.txt"
 GoodOutput="good_output.txt"
 
 # Set up text files (Bad)
-printf "sample_id\tspecies\tWRONG\tdate\n" > "$BadFile"
-printf "S001\tHuman\tBlood\t2026-03-08\n" >> "$BadFile"
-printf "\tMouse\tBrain\t2026-03-08\n" >> "$BadFile"
-printf "S001\tDog\tLiver\t26-03-08\n" >> "$BadFile"
-printf "S004\tCat\tLungs\t2026/03/08\n" >> "$BadFile"
+cat << 'EOF' > "$BadFile"
+sample_id	species	WRONG	date
+S001	Human	Blood	03-08-26
+	Mouse	Brain	2026-03-08
+S001	Dog	Liver	26-03-08
+S004	Cat	Lungs	2026/03/08
+EOF
 
 cat << 'EOF' > "$BadExpected"
-Line 2: Missing column(s): tissue
+Line 1: Missing column(s): tissue
+Line 2: Invalid date format '03-08-26'
 Line 3: Missing value in column(s): 'sample_id'
 Line 4: Duplicate sample_id 'S001'
 Line 4: Invalid date format '26-03-08'
@@ -25,40 +28,14 @@ Line 5: Invalid date format '2026/03/08'
 
 Summary:
 Total rows: 4
-Rows with errors: 3
-Rows passing: 1
-EOF
-
-# Set up text files (Good)
-printf "sample_id\tspecies\ttissue\tdate\n" > "$GoodFile"
-printf "S001\tHuman\tBlood\t2026-03-08\n" >> "$GoodFile"
-printf "S002\tMouse\tBrain\t2026-03-09\n" >> "$GoodFile"
-printf "S003\tDog\tLiver\t2026-03-10\n" >> "$GoodFile"
-
-cat << 'EOF' > "$GoodExpected"
-
-Summary:
-Total rows: 3
-Rows with errors: 0
-Rows passing: 3
+Rows with errors: 4
+Rows passing: 0
 EOF
 
 # Running the files
 # Save both good output + answer
 ./validate_metadata.sh "$BadFile" > "$BadOutput" 2>&1
 bExitCode=$?
-
-./validate_metadata.sh "$GoodFile" > "$GoodOutput" 2>&1
-gExitCode=$?
-
-: <<'COMMENT'
-echo "_________________________________"
-echo "Contents of Error-Containing File:"
-cat "$BadFile"
-echo "Script Output:"
-cat "$BadOutput"
-echo "_________________________________"
-COMMENT
 
 # Test 1, file with errors on all lines
 # Check that expected output is same as actual output and exited with code 1
@@ -72,14 +49,24 @@ else
     ((FAIL++))
 fi
 
-: <<'COMMENT'
-echo "_________________________________"
-echo "Contents of No-Error File:"
-cat "$GoodFile"
-echo "Script Output:"
-cat "$GoodOutput"
-echo "_________________________________"
-COMMENT
+# Set up text files (Good)
+cat << 'EOF' > "$GoodFile"
+sample_id	species	tissue	date
+S001	Human	Blood	2026-03-08
+S002	Mouse	Brain	2026-03-09
+S003	Dog	Liver	2026-03-10
+EOF
+
+cat << 'EOF' > "$GoodExpected"
+
+Summary:
+Total rows: 3
+Rows with errors: 0
+Rows passing: 3
+EOF
+
+./validate_metadata.sh "$GoodFile" > "$GoodOutput" 2>&1
+gExitCode=$?
 
 # Test 2, file with no errors
 # Check that expected output is same as actual output and exited with code 0

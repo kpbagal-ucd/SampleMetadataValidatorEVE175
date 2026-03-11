@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Check that file is given into the bash script properly (that we are given an argument)
-if [ -z "$1" ]; then
+if [[ -z "$1" ]]; then
     echo "Error: No file name given. Please give a .tsv file for validation"
     echo "Usage: ./validate_metadata.sh data.tsv"
     exit 1
@@ -10,7 +10,7 @@ fi
 INPUT=$1
 
 # Check if the file does not exist, and if it does, check that it is actually a .tsv file
-if [ ! -f "$INPUT" ]; then
+if [[ ! -f "$INPUT" ]]; then
     echo "Error: Input file does not exist. Please use a .tsv file"
     echo "Usage: ./validate_metadata.sh data.tsv"
     exit 1
@@ -32,8 +32,8 @@ for column in "${expected_header[@]}"; do
     fi
 done
 # Print out missing columns if needed
-if [ ${#missing_header[@]} -ne 0 ]; then
-    echo "Line 2: Missing column(s): ${missing_header[*]}"
+if [[ ${#missing_header[@]} -ne 0 ]]; then
+    echo "Line 1: Missing column(s): ${missing_header[*]}"
     headerFailed="true"
 fi
 
@@ -52,25 +52,25 @@ while IFS=$'|' read -r sample_id species tissue date; do
 
     # Check if any of the columns are missing a value in a given lines
     missing_vals=()
-    if [ -z "$sample_id" ]; then
+    if [[ -z "$sample_id" ]]; then
         missing_vals+=("sample_id")
     fi
-    if [ -z "$species" ]; then
+    if [[ -z "$species" ]]; then
         missing_vals+=("species")
     fi
-    if [ -z "$tissue" ]; then
+    if [[ -z "$tissue" ]]; then
         missing_vals+=("tissue")
     fi
-    if [ -z "$date" ]; then
+    if [[ -z "$date" ]]; then
         missing_vals+=("date")
     fi
-    if [ ${#missing_vals[@]} -ne 0 ]; then
+    if [[ ${#missing_vals[@]} -ne 0 ]]; then
         echo "Line $lineNum: Missing value in column(s): '${missing_vals[*]}'"
         lineFailed="true"
     fi
 
     # Check duplicate sample IDs
-    if [ -n "$sample_id" ]; then
+    if [[ -n "$sample_id" ]]; then
         if [[ "$seenIDs" == *" $sample_id "* ]]; then
             echo "Line $lineNum: Duplicate sample_id '$sample_id'"
             lineFailed="true"
@@ -80,7 +80,7 @@ while IFS=$'|' read -r sample_id species tissue date; do
     fi
 
     # Proper date matching
-    if [ -n "$date" ]; then
+    if [[ -n "$date" ]]; then
         if [[ ! "$date" =~ ^[0-9]{4}-[0-9]{2}-[0-9]{2}$ ]]; then
             echo "Line $lineNum: Invalid date format '$date'"
             lineFailed="true"
@@ -106,7 +106,7 @@ echo "Rows with errors: $errorLines"
 echo "Rows passing: $goodLines"
 
 # Check if no errors and exit accordingly
-if (( errorLines == 0 )) && [ "$headerFailed" == "false" ]; then
+if (( errorLines == 0 )) && [[ "$headerFailed" == "false" ]]; then
     exit 0
 else
     exit 1

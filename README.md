@@ -1,14 +1,16 @@
 # Sample Metadata Validator for EVE175
-Final project script for EVE 175
+Final project script for EVE 175.<br>
 A bash script to check a TSV file for common errors
 
 ## Prerequisites
 Standard Linux environment + Bash Shell
 
 ## Usage
-Run the script from terminal by providing the name of the .tsv file to validate
+Run the script from terminal by providing the name of the .tsv file to validate<br>
 Example command to run:
-`./validate_metadata.sh path/data.tsv`
+`./validate_metadata.sh path/data.tsv` <br>
+An example .tsv file is provided in the repository for use as well.
+
 
 ## Script Functions
 This script checks for a few common errors that might occur when making/editing a .tsv file
@@ -18,12 +20,12 @@ This script checks for a few common errors that might occur when making/editing 
 - Checks that dates match the pattern YYYY-MM-DD (but not that it is a valid date)
 - Checks that proper file + file format are given as inputs to the script
 
-For each error found, the script will print an error message with the line number and type of error found
+For each error found, the script will print an error message with the line number and type of error found<br>
 At the end, will summarize total stats:
 - Prints total rows scanned (after header line)
 - Prints total rows that have any type of error
 - Prints total rows that have no error
-Script exits with status 1 if any error found, and with status 0 if no errors found in the whole file
+Script exits with status 1 if any error found, and with status 0 if no errors found in the whole file<br>
 
 ## Example
 Example Input:
@@ -48,3 +50,24 @@ Total rows: 4
 Rows with errors: 3
 Rows passing: 1
 ```
+
+Example Input:
+```
+sample_id	species	tissue	date
+S001	Human	Blood	2026-03-08
+S002	Mouse	Brain	2026-03-09
+S003	Dog	Liver	2026-03-10
+```
+Example Output:
+
+```
+
+Summary:
+Total rows: 3
+Rows with errors: 0
+Rows passing: 3
+```
+
+## AI Usage
+AI was used for debugging purposes and to generate example files to run test.sh. 
+All code was fully understood before submission.
